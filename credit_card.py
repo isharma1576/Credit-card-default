@@ -53,3 +53,32 @@ cc_db['new_limit'][limit_temp] = limit_median
 # print('new balance limit percentile:', cc_db['new_limit'].quantile([0.5, 0.6, 0.7, 0.8, 0.9, 0.91, 0.92, 0.93, 0.94, 0.95, 0.96, 0.97, 0.98, 0.99, 1])
 
 # print("working upto here-------------------")
+# print("cc new limit", cc_db['new_limit'])
+
+# cleaning age column
+# print('age percentile:',cc_db['age'].quantile([0.9, 0.91, 0.92, 0.93, 0.94, 0.95, 0.96, 0.97, 0.98, 0.99, 1]))
+# print("age column", cc_db["age"])
+
+sns.countplot(y='age',  data=cc_db)
+# plt.show()
+
+age_median = cc_db['age'].median()
+age_temp = cc_db['age'] > 70
+
+cc_db['New_age'] = cc_db['age']
+cc_db['New_age'][age_temp] = age_median
+
+# Outlier in Pay_0(after 6 months of non payments consumer is considered to be defaulter)
+
+# print(cc_db['PAY_0'].value_counts())
+# sns.countplot(y='PAY_0', data=cc_db)
+
+pay_1_crosstab_target = pd.crosstab(cc_db['pay_1'], cc_db['default.payment.next.month'])
+# print("pay_1 crosstab result", pay_1_crosstab_target)
+
+pay_1_crosstab_target_percent = pay_1_crosstab_target.apply(lambda x: x/x.sum(), axis=1)
+round(pay_1_crosstab_target_percent, 2)
+# print("pay_1_crosstab_percent_result", pay_1_crosstab_target_percent)
+
+cc_db['Pay_1_new'] = cc_db['pay_1']
+cc_db['Pay_1_new'][cc_db['pay_1'] > 6] = 4
