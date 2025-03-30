@@ -3,7 +3,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
 
-cc_db = pd.read_csv(r'/home/ishan-sharma/work/projects/Credit-card-default/Credit Card Client dataset/UCI_Credit_Card.csv')
+cc_db = pd.read_csv(r'Credit Card Client dataset/UCI_Credit_Card.csv')
 # print(cc_db)
 
 cc_db.rename(columns={
@@ -33,52 +33,54 @@ cc_db.rename(columns={
     'PAY_AMT6':'pay_amt6',
     'default.payment.next.month': 'default.payment.next.month'},
     inplace = True)
-print('credit card columns :', cc_db.columns)
+# print('credit card columns :', cc_db.columns)
 
-# print('limit balance:', cc_db['limit_bal'])
+print("cc_db:", cc_db)
 
-fig = plt.figure(figsize =(10, 7))
-# plt.boxplot(cc_db['limit_bal'])
-# plt.show()
+# # print('limit balance:', cc_db['limit_bal'])
 
-# cleaning balance limit
-# print('balance limit percentile:',cc_db['limit_bal'].quantile([0.9, 0.91, 0.92, 0.93, 0.94, 0.95, 0.96, 0.97, 0.98, 0.99, 1]))
+# fig = plt.figure(figsize =(10, 7))
+# # plt.boxplot(cc_db['limit_bal'])
+# # plt.show()
 
-limit_median = cc_db['limit_bal'].median()
-limit_temp = cc_db['limit_bal'] > 500000
+# # cleaning balance limit
+# # print('balance limit percentile:',cc_db['limit_bal'].quantile([0.9, 0.91, 0.92, 0.93, 0.94, 0.95, 0.96, 0.97, 0.98, 0.99, 1]))
 
-cc_db['new_limit'] = cc_db['limit_bal']
-cc_db['new_limit'][limit_temp] = limit_median
+# limit_median = cc_db['limit_bal'].median()
+# limit_temp = cc_db['limit_bal'] > 500000
 
-# print('new balance limit percentile:', cc_db['new_limit'].quantile([0.5, 0.6, 0.7, 0.8, 0.9, 0.91, 0.92, 0.93, 0.94, 0.95, 0.96, 0.97, 0.98, 0.99, 1])
+# cc_db['new_limit'] = cc_db['limit_bal']
+# cc_db['new_limit'][limit_temp] = limit_median
 
-# print("working upto here-------------------")
-# print("cc new limit", cc_db['new_limit'])
+# # print('new balance limit percentile:', cc_db['new_limit'].quantile([0.5, 0.6, 0.7, 0.8, 0.9, 0.91, 0.92, 0.93, 0.94, 0.95, 0.96, 0.97, 0.98, 0.99, 1])
 
-# cleaning age column
-# print('age percentile:',cc_db['age'].quantile([0.9, 0.91, 0.92, 0.93, 0.94, 0.95, 0.96, 0.97, 0.98, 0.99, 1]))
-# print("age column", cc_db["age"])
+# # print("working upto here-------------------")
+# # print("cc new limit", cc_db['new_limit'])
 
-sns.countplot(y='age',  data=cc_db)
-# plt.show()
+# # cleaning age column
+# # print('age percentile:',cc_db['age'].quantile([0.9, 0.91, 0.92, 0.93, 0.94, 0.95, 0.96, 0.97, 0.98, 0.99, 1]))
+# # print("age column", cc_db["age"])
 
-age_median = cc_db['age'].median()
-age_temp = cc_db['age'] > 70
+# sns.countplot(y='age',  data=cc_db)
+# # plt.show()
 
-cc_db['New_age'] = cc_db['age']
-cc_db['New_age'][age_temp] = age_median
+# age_median = cc_db['age'].median()
+# age_temp = cc_db['age'] > 70
 
-# Outlier in Pay_0(after 6 months of non payments consumer is considered to be defaulter)
+# cc_db['New_age'] = cc_db['age']
+# cc_db['New_age'][age_temp] = age_median
 
-# print(cc_db['PAY_0'].value_counts())
-# sns.countplot(y='PAY_0', data=cc_db)
+# # Outlier in Pay_0(after 6 months of non payments consumer is considered to be defaulter)
 
-pay_1_crosstab_target = pd.crosstab(cc_db['pay_1'], cc_db['default.payment.next.month'])
-# print("pay_1 crosstab result", pay_1_crosstab_target)
+# # print(cc_db['PAY_0'].value_counts())
+# # sns.countplot(y='PAY_0', data=cc_db)
 
-pay_1_crosstab_target_percent = pay_1_crosstab_target.apply(lambda x: x/x.sum(), axis=1)
-round(pay_1_crosstab_target_percent, 2)
-# print("pay_1_crosstab_percent_result", pay_1_crosstab_target_percent)
+# pay_1_crosstab_target = pd.crosstab(cc_db['pay_1'], cc_db['default.payment.next.month'])
+# # print("pay_1 crosstab result", pay_1_crosstab_target)
 
-cc_db['Pay_1_new'] = cc_db['pay_1']
-cc_db['Pay_1_new'][cc_db['pay_1'] > 6] = 4
+# pay_1_crosstab_target_percent = pay_1_crosstab_target.apply(lambda x: x/x.sum(), axis=1)
+# round(pay_1_crosstab_target_percent, 2)
+# # print("pay_1_crosstab_percent_result", pay_1_crosstab_target_percent)
+
+# cc_db['Pay_1_new'] = cc_db['pay_1']
+# cc_db['Pay_1_new'][cc_db['pay_1'] > 6] = 4
